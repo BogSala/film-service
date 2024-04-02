@@ -33,3 +33,5 @@ services:
       - env/mysql.env
     volumes:
       - ./database:/var/lib/mysql
+      - ./scripts/tables.sql:/docker-entrypoint-initdb.d/0_init.sql
+
