@@ -35,3 +35,11 @@ services:
       - ./database:/var/lib/mysql
       - ./scripts/tables.sql:/docker-entrypoint-initdb.d/0_init.sql
 
+  composer:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    volumes:
+      - ../:/var/www
+    entrypoint:
+      [ 'composer', '--ignore-platform-reqs' ]
