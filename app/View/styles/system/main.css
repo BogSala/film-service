@@ -1,0 +1,45 @@
+header {
+    font-size: 30px;
+    padding-left: 100px;
+    padding-right: 100px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+hr {
+    margin-top: 0;
+}
+a {
+    cursor:pointer;
+    color:black;
+    text-decoration:underline;
+}
+header .actions {
+    display: inline-flex;
+    width: 300px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logout-button {
+    all: unset;
+    cursor:pointer;
+    color: #7c0e0e;
+    text-decoration:underline;
+    font-size: 25px;
+}
+
+header a {
+    font-size: 25px;
+    padding-top: 3px;
+}
+
+.errors {
+    color: #be0f0f;
+}
+
+.link-main {
+    display: block;
+    text-decoration: none;
+}
+

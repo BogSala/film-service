@@ -1,0 +1,17 @@
+.film {
+    font-size: 40px;
+    padding: 10px;
+    border: black solid 1px;
+    margin-bottom: 20px;
+}
+.film form {
+    display: flex;
+    justify-content: center;
+}
+.film .delete-button {
+    all: unset;
+    width: 200px;
+    color: red;
+    cursor:pointer;
+    text-decoration:underline;
+}

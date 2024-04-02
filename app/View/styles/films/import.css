@@ -1,0 +1,8 @@
+.import {
+    min-height: 300px;
+    text-align: start;
+}
+
+.example {
+    white-space: pre-wrap;
+}
