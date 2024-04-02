@@ -20,7 +20,7 @@ The life cycle of a request is as follows:
 - The system finds the routers in the `router.php`  
 - We get to the `Controller` 
 - If this is a `Controller` method for a **GET** request, then we usually get some data to be processed by the component, and immediately get to the view where the received data is generated in HTML using `Component` classes
-- If this is a `Controller` method for a **POST** request, then we usually get some data from the form, process it using the `Validator` classes. If the validation is successful, then we work with the database using the `Service` class and direct the user to another page. If it is unsuccessful, we return the user to the same page by displaying errors through the `ErrorComponent`.
+- If this is a `Controller` method for a **POST** request, then we usually get some data from the form, and process it using the `Validator` classes. If the validation is successful, then we work with the database using the `Service` class and direct the user to another page. If it is unsuccessful, we return the user to the same page by displaying errors through the `ErrorComponent`.
 
 
 # Working with project
@@ -29,7 +29,7 @@ We have two options, local and docker (preferred)
 ## Docker
 To launch, you only need to have a docker, and docker compose
 
-After clonning:
+After cloning:
 - `cd docker`
 - `docker compose up -d`
 - `docker-compose run --rm composer install`
@@ -39,12 +39,13 @@ Thats all!
 
 ## Localy
 
-To launch, you at least need to have a php, composer, pdo, mysql, pdo, pdo_mysql
+To launch, you at least need to have a php, composer, MySQL, PDO, pdo_mysql
 
-After clonning:
+After cloning:
 - `composer install`
 - Create database with name like MYSQL_DATABASE in `docker\env\mysql.env`
-- You need to run script for this database `docker\scripts\tables.sql`
+- You need to run the script for this database `docker\scripts\tables.sql`
+- Change `configs/database.php` with your credentials
 - `composer serve`
 
 - Go to: `localhost:8000/`
