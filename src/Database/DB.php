@@ -4,7 +4,6 @@ namespace src\Database;
 
 use PDO;
 use src\Route\Route;
-use src\Session\Cookie;
 
 class DB
 {

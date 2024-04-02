@@ -3,7 +3,6 @@
 namespace App\Controllers\FormValidators;
 
 use src\Route\Route;
-use src\Session\Cookie;
 use src\Validation\Validator;
 
 class UserValidator

@@ -2,9 +2,6 @@
 
 namespace App\View\Components;
 
-use App\View\Components\Component;
-use src\Session\Cookie;
-
 class ErrorComponent extends Component
 {
     public static function getErrorsFromSession(): string

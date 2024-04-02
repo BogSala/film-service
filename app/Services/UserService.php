@@ -37,6 +37,7 @@ class UserService
 
         } catch (\PDOException $exception){
             Route::redirect('/500');
+            die();
         }
 
     }

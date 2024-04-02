@@ -15,6 +15,7 @@ class Request
             return $_POST;
         } else {
             View::view('system.404');
+            die();
         }
     }
 
