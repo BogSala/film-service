@@ -36,7 +36,7 @@ class FilmValidator
 
     }
 
-    private function dateField($date)
+    private function dateField($date): void
     {
         $validator = new Validator();
         if (!$validator->set(['release date', $date])
