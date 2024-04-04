@@ -13,6 +13,7 @@ Route::post('/users/logout', [UserController::class, 'logout']);
 Route::post('/users/store', [UserController::class, 'store']);
 Route::post('/users/auth', [UserController::class, 'auth']);
 
+Route::get('/', [FilmController::class, 'index']);
 Route::get('/films', [FilmController::class, 'index']);
 Route::get('/films/index', [FilmController::class, 'index']);
 Route::get('/films/search', [FilmController::class, 'search']);
