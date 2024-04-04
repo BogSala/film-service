@@ -158,4 +158,18 @@ class FilmService
         }
     }
 
+    public static function getAllTitlesByUserId(int $userId): false|array
+    {
+        try {
+            $db = (new DB())->getPdo();
+            $stmt = $db->prepare('SELECT title FROM films WHERE user_id= ?');
+            $stmt->execute([$userId]);
+            return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+
+        } catch (\PDOException $e){
+            Route::redirect('/500');
+            return false;
+        }
+    }
+
 }

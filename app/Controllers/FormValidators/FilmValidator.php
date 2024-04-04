@@ -2,6 +2,7 @@
 
 namespace App\Controllers\FormValidators;
 
+use App\Services\FilmService;
 use src\Validation\Validator;
 
 class FilmValidator
@@ -15,7 +16,8 @@ class FilmValidator
 
     public function createFormValidate(array $data): array|bool
     {
-        $this->titleField($data['title']);
+        $titles = FilmService::getAllTitlesByUserId($data['user_id']);
+        $this->titleField($data['title'], $titles);
         $this->dateField($data['release_year']);
         $this->formatField($data['format']);
         $this->starsField($data['stars']);
@@ -23,12 +25,13 @@ class FilmValidator
         return !($this->errors);
     }
 
-    private function titleField($title): void
+    private function titleField($title, $titles): void
     {
         $validator = new Validator();
         if (!$validator->set(['title', $title])
             ->required()
             ->betweenSymbols(3, 100)
+            ->unique($titles)
             ->validate()
         ){
             $this->errors[] = $validator->getErrors();
@@ -54,7 +57,7 @@ class FilmValidator
         $validator = new Validator();
         if (!$validator->set(['format', $format])
             ->required()
-            ->betweenSymbols(1,100)
+            ->inArray(['VHS', 'DVD', 'Blu-Ray'])
             ->validate()
         ){
             $this->errors[] = $validator->getErrors();

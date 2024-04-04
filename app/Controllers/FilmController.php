@@ -57,9 +57,9 @@ class FilmController extends Controller
     public function store(): void
     {
         $data = Request::formData();
+        $data['user_id'] = $this->userId;
         $validated = $this->formValidator->createFormValidate($data);
         $errors = $this->formValidator->getErrors();
-        $data['user_id'] = $this->userId;
 
         if ($validated){
             $inserted = FilmService::insertFilm($data);

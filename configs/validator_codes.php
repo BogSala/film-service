@@ -12,6 +12,7 @@ return array(
     'is_equals'      => 'The value of the field %s must be equal %s ',
     'no_whitespaces' => 'The field %s does not accept spaces',
     'is_alpha_num'   => 'The field %s only accepts alphanumeric characters',
-    'unique'         => 'The %s is already taken, must be unique',
+    'is_unique'      => 'The %s is already taken, must be unique',
     'is_int'         => 'The %s must be a number',
+    'in_array'       => 'Acceptable values for %s, is: %s'
 );

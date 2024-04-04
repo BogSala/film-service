@@ -27,10 +27,10 @@ class Validator {
         $this->messages = require ROOT_PATH . 'configs/validator_codes.php';
     }
     
-    public function unique($variable, $array): static
+    public function unique($array, bool $strict = false): static
     {
-        if (in_array($variable , $array)){
-            $this->setError(sprintf($this->messages['unique'], $this->data['name']));
+        if (in_array($this->data['value'] , $array , $strict)){
+            $this->setError(sprintf($this->messages['is_unique'], $this->data['name']));
         }
         return $this;
     }
@@ -104,6 +104,15 @@ class Validator {
         $verify = is_numeric($this->data['value']);
         if(!$verify){
             $this->setError(sprintf($this->messages['is_int'], $this->data['name']));
+        }
+        return $this;
+    }
+
+    public function inArray(array $array): static
+    {
+        $verify = in_array($this->data['value'], $array);
+        if(!$verify){
+            $this->setError(sprintf($this->messages['in_array'], $this->data['name'], implode(', ', $array)));
         }
         return $this;
     }
