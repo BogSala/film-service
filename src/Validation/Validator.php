@@ -141,6 +141,14 @@ class Validator {
         }
         return $this;
     }
+    public function notPregMatch(string $pattern): static
+    {
+        $verify = !preg_match($pattern, $this->data['value']);
+        if(!$verify){
+            $this->setError(sprintf($this->messages['no_preg_match'], $this->data['name']));
+        }
+        return $this;
+    }
     
     public function validate(): bool
     {

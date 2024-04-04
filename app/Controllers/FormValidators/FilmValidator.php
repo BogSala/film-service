@@ -69,6 +69,7 @@ class FilmValidator
         if (!$validator->set(['$stars', $stars])
             ->required()
             ->betweenSymbols(1,1000)
+            ->notPregMatch("/[^A-Za-z' ,-]/")
             ->validate()
         ){
             $this->errors[] = $validator->getErrors();

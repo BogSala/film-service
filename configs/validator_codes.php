@@ -14,5 +14,6 @@ return array(
     'is_alpha_num'   => 'The field %s only accepts alphanumeric characters',
     'is_unique'      => 'The %s is already taken, must be unique',
     'is_int'         => 'The %s must be a number',
-    'in_array'       => 'Acceptable values for %s, is: %s'
+    'in_array'       => 'Acceptable values for %s, is: %s',
+    'no_preg_match'  => 'The value %s contain not acceptable symbols'
 );
