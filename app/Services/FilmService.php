@@ -8,7 +8,7 @@ use src\Route\Route;
 
 class FilmService
 {
-    public static function processImportString($filmsString): array
+    public static function processImportString(string $filmsString): array
     {
         try {
             $films = array_filter(explode("\r\n\r\n", $filmsString));

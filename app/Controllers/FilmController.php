@@ -78,7 +78,9 @@ class FilmController extends Controller
     public function massStore(): void
     {
         $data = Request::formData();
+        ob_start();
         $films = FilmService::processImportString($data['import']);
+        ob_end_clean();
         $inserted = FilmService::importFilms( $films , $this->userId);
 
         if($inserted) {
