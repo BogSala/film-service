@@ -42,7 +42,7 @@ class FilmValidator
         if (!$validator->set(['release date', $date])
             ->isInt()
             ->required()
-            ->betweenSymbols(4, 4)
+            ->betweenValues(1800, date("Y"))
             ->validate()
         ){
             $this->errors[] = $validator->getErrors();

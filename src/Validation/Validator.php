@@ -82,6 +82,14 @@ class Validator {
         return $this;
     }
 
+    public function betweenValues($min, $max): static
+    {
+        if(!is_numeric($this->data['value']) || (($this->data['value'] < $min || $this->data['value'] > $max ))){
+            $this->setError(sprintf($this->messages['between_values'], $this->data['name'], $min, $max));
+        }
+        return $this;
+    }
+
     public function isAlphaNumeric($additional = ''): static
     {
         $pattern = '/^(\s|[a-zA-Z0-9])*$/';
