@@ -34,13 +34,13 @@ class UserController extends Controller
     public function register(): void
     {
         $formErrors = ErrorComponent::getErrorsFromSession();
-        View::view('user.register' , compact('formErrors'));
+        View::view('users.register' , compact('formErrors'));
     }
 
     public function login(): void
     {
         $formErrors = ErrorComponent::getErrorsFromSession();
-        View::view('user.login' , compact('formErrors'));
+        View::view('users.login' , compact('formErrors'));
     }
 
     public function auth(): void

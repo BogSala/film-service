@@ -12,7 +12,7 @@
     <style>
         <?php
             style('system.main');
-            style('user.main');
+            style('users.main');
         ?>
     </style>
 
