@@ -56,7 +56,7 @@ class FilmController extends Controller
 
     public function store(): void
     {
-        $data = Request::data();
+        $data = Request::formData();
         $validated = $this->formValidator->createFormValidate($data);
         $errors = $this->formValidator->getErrors();
         $data['user_id'] = $this->userId;
@@ -77,7 +77,7 @@ class FilmController extends Controller
 
     public function massStore(): void
     {
-        $data = Request::data();
+        $data = Request::formData();
         $films = FilmService::processImportString($data['import']);
         $inserted = FilmService::importFilms( $films , $this->userId);
 

@@ -18,5 +18,18 @@ class Request
             die();
         }
     }
+    public static function formData()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $data = $_POST;
+            foreach ($data as $key => $value){
+                $data[$key] = strip_tags($value);
+            }
+            return $data;
+        } else {
+            View::view('system.404');
+            die();
+        }
+    }
 
 }
