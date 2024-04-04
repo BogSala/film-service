@@ -48,11 +48,14 @@ $find = FilmComponent::getSearchHTMl();
         <br>
 
         <label for="by_title">
-            <input type="radio" id="by_title" name="search_type" value="title"/>
+            <input type="radio" checked="checked" id="by_title" name="search_type" value="title"/>
             Find by title</label>
         <label for="by_star">
             <input type="radio" id="by_star" name="search_type" value="stars"/>
             Find by actor name</label>
+        <label for="both">
+            <input type="radio" id="both" name="search_type" value="both"/>
+            Both</label>
 
         <br>
         <button type="submit" class="search-button" >Search</button>

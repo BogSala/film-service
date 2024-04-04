@@ -42,7 +42,7 @@ class FilmController extends Controller
     {
         $data = Request::data();
 
-        $films = FilmService::searchBy($data['search_type'] , $data['search']);
+        $films = FilmService::searchBy($data['search_type'] ?? 'title', $data['search']);
 
         $_SESSION['search_results'] = $films;
         Route::redirect('/films/search');

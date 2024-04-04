@@ -133,13 +133,17 @@ class FilmService
 
     public static function searchBy(string $searchType, string $value): ?array
     {
-        if (!($searchType === 'title' || $searchType === 'stars')){
+        if (! in_array($searchType, [ 'title', 'stars', 'both'])){
             return null;
         }
         try {
             $value = "%$value%";
             $db = (new DB())->getPdo();
-            $stmt = $db->prepare("SELECT id, title, release_year FROM films WHERE $searchType LIKE :value ");
+            if ($searchType === 'both'){
+                $stmt = $db->prepare("SELECT id, title, release_year FROM films WHERE title LIKE :value OR stars LIKE :value");
+            } else {
+                $stmt = $db->prepare("SELECT id, title, release_year FROM films WHERE $searchType LIKE :value ");
+            }
 
             $stmt->bindParam(':value', $value);
             $stmt->execute();
