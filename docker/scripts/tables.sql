@@ -20,4 +20,5 @@ create table if not exists films
         primary key (id),
     constraint user
         foreign key (user_id) references users (id)
-)
+);
+ALTER TABLE films CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
