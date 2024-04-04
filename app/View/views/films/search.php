@@ -11,8 +11,10 @@
     />
     <style>
         <?php
-            style('system.main');
-            style('films.index');
+            use App\View\Components\ImportComponent;
+
+            ImportComponent::style('system.main');
+            ImportComponent::style('films.index');
         ?>
     </style>
 

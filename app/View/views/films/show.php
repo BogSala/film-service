@@ -11,8 +11,10 @@
     />
     <style>
         <?php
-            style('system.main');
-            style('films.show');
+            use App\View\Components\ImportComponent;
+
+            ImportComponent::style('system.main');
+            ImportComponent::style('films.show');
         ?>
     </style>
 
@@ -43,5 +45,8 @@ $filmHTML = FilmComponent::prepareFilmHTML($film);
 <main class="container">
     <?=$filmHTML?>
 </main>
+<script>
+    <?php ImportComponent::script('films.show'); ?>
+</script>
 </body>
 </html>

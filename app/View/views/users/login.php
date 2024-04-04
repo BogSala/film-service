@@ -11,8 +11,10 @@
     />
     <style>
         <?php
-            style('system.main');
-            style('users.main');
+            use App\View\Components\ImportComponent;
+
+            ImportComponent::style('system.main');
+            ImportComponent::style('users.main');
         ?>
     </style>
 

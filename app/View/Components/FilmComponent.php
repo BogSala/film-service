@@ -39,10 +39,16 @@ class FilmComponent extends Component
             <div class=film-release> Release year: $film[release_year]</div>
             <div class=film-format> Format: $film[format]</div>
             <div class=film-stars> Stars: $film[stars]</div>
-            <form action=/films/destroy method=post class=delete-form>
+            <button class=delete id=delete>Delete</button>
+            <div id = delete-form-container>
+                <form action=/films/destroy method=post class=delete-form id=delete-form>
                 <input type=hidden name=film_id value=$film[id]>
-                <button type=submit class=delete-button >Delete</button>
-            </form>
+                <span>Are you sure?</span>
+                <button type=submit class=confirm-deletion id=confirm-deletion>Yes</button>
+                </form>
+                <button class=cancel-deletion id=cancel-deletion>No</button>
+            </div>
+
         </div>
         ";
     }

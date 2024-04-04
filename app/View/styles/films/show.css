@@ -4,14 +4,28 @@
     border: black solid 1px;
     margin-bottom: 20px;
 }
-.film form {
-    display: flex;
+
+#delete-form-container {
+    display: none;
+    flex-direction: row;
     justify-content: center;
 }
-.film .delete-button {
+
+.film button {
     all: unset;
-    width: 200px;
+    width: fit-content;
     color: red;
-    cursor:pointer;
+    cursor: pointer;
     text-decoration:underline;
+    margin: 0 30px;
+}
+
+#delete {
+    display: block;
+    margin: 0 auto;
+    width: fit-content;
+}
+
+#cancel-deletion {
+    color: #373c44;
 }

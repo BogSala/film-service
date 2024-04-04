@@ -13,7 +13,8 @@
     <title>Create</title>
     <style>
         <?php
-            style('system.main');
+            use App\View\Components\ImportComponent;
+            ImportComponent::style('system.main');
         ?>
     </style>
 </head>
@@ -23,7 +24,7 @@
         Film-service
     </a>
     <div class="actions">
-        <a href="/films/make-search" class="search">Search</a>
+        <a href="/films/search" class="search">Search</a>
         <a href="/films/create" class="create">Create</a>
         <form action="/users/logout" method="post" class="logout-form">
             <button type="submit" class="logout-button" >Logout</button>

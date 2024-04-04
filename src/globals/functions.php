@@ -1,11 +1,5 @@
 <?php
 
-
-function style(string $style)
-{
-    return \App\View\Components\StyleComponent::getStyle($style);
-}
-
 function arrayFlat($array): array
 {
     $return = array();

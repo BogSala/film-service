@@ -12,8 +12,10 @@
     <title>Not found</title>
     <style>
         <?php
-            style('system.main');
-            style('system.errors');
+            use App\View\Components\ImportComponent;
+
+            ImportComponent::style('system.main');
+            ImportComponent::style('system.errors');
         ?>
     </style>
 
