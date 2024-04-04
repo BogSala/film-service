@@ -81,14 +81,27 @@ class FilmController extends Controller
         ob_start();
         $films = FilmService::processImportString($data['import']);
         ob_end_clean();
-        $inserted = FilmService::importFilms( $films , $this->userId);
 
-        if($inserted) {
+        $filmsCount = count($films);
+        foreach ($films as $key => $film){
+            $film['user_id'] = $this->userId;
+            if (!$this->formValidator->createFormValidate($film)){
+                unset($films[$key]);
+                $this->formValidator->clearErrors();
+            }
+        }
+
+        $inserted = 0;
+
+        if (count($films)>0){
+            $inserted = FilmService::importFilms( $films , $this->userId);
+        }
+        if($inserted === $filmsCount) {
             Route::redirect('/films');
             die();
-        };
-
-        $_SESSION['errors'] = ['Something went wrong, check your input'];
+        } else {
+            $_SESSION['errors'] = ['Not all films imported this time. Imported count: $inserted'];
+        }
         Route::redirect('/films/import');
     }
 

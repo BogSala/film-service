@@ -13,14 +13,18 @@ class FilmValidator
     {
         return $this->errors;
     }
+    public function clearErrors(): array
+    {
+        return $this->errors = [];
+    }
 
     public function createFormValidate(array $data): array|bool
     {
-        $titles = FilmService::getAllTitlesByUserId($data['user_id']);
-        $this->titleField($data['title'], $titles);
-        $this->dateField($data['release_year']);
-        $this->formatField($data['format']);
-        $this->starsField($data['stars']);
+        $titles = FilmService::getAllTitlesByUserId($data['user_id'] ?? null);
+        $this->titleField($data['title'] ?? null, $titles);
+        $this->dateField($data['release_year'] ?? null);
+        $this->formatField($data['format'] ?? null);
+        $this->starsField($data['stars'] ?? null);
 
         return !($this->errors);
     }
@@ -69,7 +73,7 @@ class FilmValidator
         if (!$validator->set(['$stars', $stars])
             ->required()
             ->betweenSymbols(1,1000)
-            ->notPregMatch("/[^A-Za-z' ,-]/")
+            ->notPregMatch("/[^\p{L}' ,-]/u")
             ->validate()
         ){
             $this->errors[] = $validator->getErrors();

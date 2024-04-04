@@ -21,18 +21,11 @@ class FilmService
                     list($key, $value) = explode(":", trim($line));
                     $value = trim($value);
                     $snakeKey = preg_replace("/[^a-z_]/", '', strtolower(preg_replace('/\s+/', '_', $key)));
+                    $value = $snakeKey === 'release_year' ? (int)$value : $value;
                     $filmAsArray[$snakeKey] = $value;
                 }
 
                 $readyFilms[] = $filmAsArray;
-            }
-
-            foreach ($readyFilms as $key => $film) {
-                $starsString = $film["stars"];
-                $starsString = str_replace(' ', '', $starsString);
-                $starsArray = explode(',', $starsString);
-                unset($readyFilms[$key]['stars']);
-                $readyFilms[$key]['stars'] = implode(', ' , $starsArray);
             }
 
             return $readyFilms;
@@ -103,13 +96,14 @@ class FilmService
 
     }
 
-    public static function importFilms(array $films, ?int $userId): bool
+    public static function importFilms(array $films, ?int $userId): int
     {
         if (!$films){
             return false;
         }
 
         try {
+            $count = 0;
             $db = (new DB())->getPdo();
             $db->beginTransaction();
 
@@ -122,11 +116,15 @@ class FilmService
                 foreach ($film as $column => $value) {
                     $bind[$column] = $value;
                 }
-                $stmt->execute($bind);
+                $result = $stmt->execute($bind);
+                if ($result){
+                    $count += 1;
+                }
             }
-            return $db->commit();
+            $db->commit();
+            return $count;
         } catch (\PDOException $e) {
-            return false;
+            return 0;
         }
 
     }
