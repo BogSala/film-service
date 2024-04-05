@@ -2,19 +2,22 @@
 
 namespace App\Services;
 
+use App\Controllers\FormValidators\FilmValidator;
 use PDO;
 use src\Database\DB;
 use src\Route\Route;
 
 class FilmService
 {
-    public static function processImportString(string $filmsString): array
+
+    public static function getFilmsFromString(string $filmsString): array
     {
         try {
-            $films = array_filter(explode("\r\n\r\n", $filmsString));
             $readyFilms = [];
+            $films = array_filter(preg_split("/(\r?\n){2}/", $filmsString));
+
             foreach ($films as $movie) {
-                $lines = array_filter(explode("\r\n", $movie));
+                $lines = array_filter(preg_split("/(\r?\n)/", $movie));
                 $filmAsArray = [];
 
                 foreach ($lines as $line) {
@@ -35,6 +38,44 @@ class FilmService
 
     }
 
+    public static function deleteInvalidFilms(array $films, int $userId) :array
+    {
+        $titles = [];
+        $validator = new FilmValidator();
+        foreach ($films as $key => $film){
+            $film['user_id'] = $userId;
+            if (!@$validator->createFormValidate($film)  || in_array($film['title'], $titles) ){
+                unset($films[$key]);
+                $validator->clearErrors();
+            } else {
+                $titles[] = $film['title'];
+            }
+        }
+        return $films;
+    }
+
+    public static function safeOpen(string $name, string $tmpName): ?string
+    {
+        $pathInfo = pathinfo($name);
+        $base = $pathInfo["filename"];
+        $base = preg_replace("/[^\w-]/", "_", $base);
+
+        $filename = $base . "." . $pathInfo["extension"];
+
+        $destination = rtrim(ROOT_PATH, '/') ."/tmp/" . $filename;
+
+        if ( !move_uploaded_file($tmpName, $destination)) {
+            return null;
+        }
+
+        $fileData = file_get_contents($destination);
+        unlink($destination);
+
+        if($fileData === FALSE) {
+            return null;
+        }
+        return stripslashes(strip_tags($fileData));
+    }
     public static function insertFilm(array $data): bool
     {
         $sql = "INSERT INTO films(user_id ,title, release_year, format, stars)
@@ -98,15 +139,13 @@ class FilmService
 
     public static function importFilms(array $films, ?int $userId): int
     {
-        if (!$films){
+        if (!$films) {
             return false;
         }
 
         try {
             $count = 0;
             $db = (new DB())->getPdo();
-            $db->beginTransaction();
-
             $stmt = $db->prepare("INSERT INTO films (user_id, title, release_year, format, stars) 
             VALUES (:user_id, :title, :release_year, :format, :stars)");
 
@@ -121,7 +160,6 @@ class FilmService
                     $count += 1;
                 }
             }
-            $db->commit();
             return $count;
         } catch (\PDOException $e) {
             return 0;

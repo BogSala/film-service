@@ -3,6 +3,7 @@
 namespace App\Controllers\FormValidators;
 
 use App\Services\FilmService;
+use finfo;
 use src\Validation\Validator;
 
 class FilmValidator
@@ -27,6 +28,42 @@ class FilmValidator
         $this->starsField($data['stars'] ?? null);
 
         return !($this->errors);
+    }
+
+    public function importFormValidate($file): bool
+    {
+        if (empty($file)) {
+            $this->errors[] =  'Add your file';
+        } elseif ($this->getFileError($file)){
+            $this->errors[] = $this->getFileError($file);
+        } elseif ($file["size"] > 1048576) {
+            $this->errors[] = 'File is too big';
+        } else {
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mime_type = $finfo->file($file['tmp_name']);
+            if ($mime_type !== 'text/plain'){
+                $this->errors[] =  'Filetype isn`t text/plain';
+            }
+        }
+        return !($this->errors);
+    }
+
+    private function getFileError(array $file) : ?string
+    {
+        if ($file["error"] !== UPLOAD_ERR_OK) {
+
+            return match ($file["error"]) {
+                UPLOAD_ERR_PARTIAL => ('File only partially uploaded'),
+                UPLOAD_ERR_NO_FILE => ('No file was uploaded'),
+                UPLOAD_ERR_EXTENSION => ('File upload stopped by a PHP extension'),
+                UPLOAD_ERR_FORM_SIZE => ('File exceeds MAX_FILE_SIZE in the HTML form'),
+                UPLOAD_ERR_INI_SIZE => ('File exceeds upload_max_filesize in php.ini'),
+                UPLOAD_ERR_NO_TMP_DIR => ('Temporary folder not found'),
+                UPLOAD_ERR_CANT_WRITE => ('Failed to write file'),
+                default => ('Unknown upload error'),
+            };
+        }
+        return null;
     }
 
     private function titleField($title, $titles): void

@@ -77,30 +77,35 @@ class FilmController extends Controller
 
     public function massStore(): void
     {
-        $data = Request::formData();
-        ob_start();
-        $films = FilmService::processImportString($data['import']);
-        ob_end_clean();
+        $file = $_FILES['import'] ?? [];
 
-        $filmsCount = count($films);
-        foreach ($films as $key => $film){
-            $film['user_id'] = $this->userId;
-            if (!$this->formValidator->createFormValidate($film)){
-                unset($films[$key]);
-                $this->formValidator->clearErrors();
-            }
+        if (!$this->formValidator->importFormValidate($file)) {
+            $_SESSION['errors'] = $this->formValidator->getErrors();;
+            Route::redirect('/films/import');
+            die();
         }
 
-        $inserted = 0;
+        $fileData = FilmService::safeOpen($file['name'] , $file['tmp_name']);
 
-        if (count($films)>0){
-            $inserted = FilmService::importFilms( $films , $this->userId);
+        $films = @FilmService::getFilmsFromString($fileData);
+        if($films){
+            $filmsCount = count($films);
+            $films = FilmService::deleteInvalidFilms($films, $this->userId);
+            $inserted = 0;
+        } else {
+            $_SESSION['errors'] = ['We have a problem with opening or parsing your file, check its name and value for special characters like whitespaces'];
+            Route::redirect('/films/import');
+            die();
         }
-        if($inserted === $filmsCount) {
+
+        if ($filmsCount > 0){
+            $inserted = FilmService::importFilms($films , $this->userId);
+        }
+        if($inserted === $filmsCount && $inserted !== 0){
             Route::redirect('/films');
             die();
         } else {
-            $_SESSION['errors'] = ['Not all films imported this time. Imported count: $inserted'];
+            $_SESSION['errors'] = ["Not all films imported this time. Imported count: $inserted"];
         }
         Route::redirect('/films/import');
     }
