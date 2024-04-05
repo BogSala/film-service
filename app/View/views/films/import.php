@@ -37,9 +37,9 @@
 <hr>
 
 <main class="container">
-    <form action="/films/mass-store" method="post" class="create-form">
+    <form action="/films/mass-store" enctype="multipart/form-data" method="post" class="create-form">
         <label for="import">Import data: </label>
-        <textarea name="import" id="import" class="import"></textarea>
+        <input type="file" id="import" name="import">
         <button type="submit" class="delete-button" >Import</button>
     </form>
     <div class="errors">

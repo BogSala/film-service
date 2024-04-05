@@ -27,10 +27,10 @@ class Validator {
         $this->messages = require ROOT_PATH . 'configs/validator_codes.php';
     }
     
-    public function unique($variable, $array): static
+    public function unique($array, bool $strict = false): static
     {
-        if (in_array($variable , $array)){
-            $this->setError(sprintf($this->messages['unique'], $this->data['name']));
+        if (in_array($this->data['value'] , $array , $strict)){
+            $this->setError(sprintf($this->messages['is_unique'], $this->data['name']));
         }
         return $this;
     }
@@ -82,6 +82,14 @@ class Validator {
         return $this;
     }
 
+    public function betweenValues($min, $max): static
+    {
+        if(!is_numeric($this->data['value']) || (($this->data['value'] < $min || $this->data['value'] > $max ))){
+            $this->setError(sprintf($this->messages['between_values'], $this->data['name'], $min, $max));
+        }
+        return $this;
+    }
+
     public function isAlphaNumeric($additional = ''): static
     {
         $pattern = '/^(\s|[a-zA-Z0-9])*$/';
@@ -96,6 +104,15 @@ class Validator {
         $verify = is_numeric($this->data['value']);
         if(!$verify){
             $this->setError(sprintf($this->messages['is_int'], $this->data['name']));
+        }
+        return $this;
+    }
+
+    public function inArray(array $array): static
+    {
+        $verify = in_array($this->data['value'], $array);
+        if(!$verify){
+            $this->setError(sprintf($this->messages['in_array'], $this->data['name'], implode(', ', $array)));
         }
         return $this;
     }
@@ -121,6 +138,14 @@ class Validator {
         $verify = is_null($this->data['value']) || preg_match('#^\S+$#', $this->data['value']);
         if(!$verify){
             $this->setError(sprintf($this->messages['no_whitespaces'], $this->data['name']));
+        }
+        return $this;
+    }
+    public function notPregMatch(string $pattern): static
+    {
+        $verify = !preg_match($pattern, $this->data['value']);
+        if(!$verify){
+            $this->setError(sprintf($this->messages['no_preg_match'], $this->data['name']));
         }
         return $this;
     }

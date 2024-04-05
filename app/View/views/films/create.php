@@ -42,8 +42,13 @@
         <label for="release_year">Release date: </label>
         <input type="number" name="release_year" id="release_year" class="film-release" step="1">
 
-        <label for=format">Format:</label>
-        <input type="text" name="format" id=format" class="film-format">
+        <label for="format">Format:</label>
+        <select name="format" id="format">
+            <option value="">--- Choose a format ---</option>
+            <option value="VHS">VHS</option>
+            <option value="DVD">DVD</option>
+            <option value="Blu-Ray">Blu-Ray</option>
+        </select>
 
         <label for="stars">Stars: </label>
         <input type="text" name="stars" id="stars" class="stars" placeholder="Humphrey Bogart, Ingrid Bergman, Claude Rains, Peter Lorre">

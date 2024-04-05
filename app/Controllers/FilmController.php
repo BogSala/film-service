@@ -57,9 +57,9 @@ class FilmController extends Controller
     public function store(): void
     {
         $data = Request::formData();
+        $data['user_id'] = $this->userId;
         $validated = $this->formValidator->createFormValidate($data);
         $errors = $this->formValidator->getErrors();
-        $data['user_id'] = $this->userId;
 
         if ($validated){
             $inserted = FilmService::insertFilm($data);
@@ -77,18 +77,36 @@ class FilmController extends Controller
 
     public function massStore(): void
     {
-        $data = Request::formData();
-        ob_start();
-        $films = FilmService::processImportString($data['import']);
-        ob_end_clean();
-        $inserted = FilmService::importFilms( $films , $this->userId);
+        $file = $_FILES['import'] ?? [];
 
-        if($inserted) {
+        if (!$this->formValidator->importFormValidate($file)) {
+            $_SESSION['errors'] = $this->formValidator->getErrors();;
+            Route::redirect('/films/import');
+            die();
+        }
+
+        $fileData = FilmService::safeOpen($file['name'] , $file['tmp_name']);
+
+        $films = @FilmService::getFilmsFromString($fileData);
+        if($films){
+            $filmsCount = count($films);
+            $films = FilmService::deleteInvalidFilms($films, $this->userId);
+            $inserted = 0;
+        } else {
+            $_SESSION['errors'] = ['We have a problem with opening or parsing your file, check its name and value for special characters like whitespaces'];
+            Route::redirect('/films/import');
+            die();
+        }
+
+        if ($filmsCount > 0){
+            $inserted = FilmService::importFilms($films , $this->userId);
+        }
+        if($inserted === $filmsCount && $inserted !== 0){
             Route::redirect('/films');
             die();
-        };
-
-        $_SESSION['errors'] = ['Something went wrong, check your input'];
+        } else {
+            $_SESSION['errors'] = ["Not all films imported this time. Imported count: $inserted"];
+        }
         Route::redirect('/films/import');
     }
 
